@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+
+<html lang="kk">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Құжаттар - Tastandiev School</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body oncontextmenu="return false;"> <!-- Basic Download Protection -->
+
+    <header>
+
+        <nav class="navbar">
+
+            <div class="logo">Tastandiev School</div>
+
+            <ul class="nav-links">
+
+                <li><a href="index.html">Басты бет</a></li>
+
+                <li><a href="about.html">Мектеп туралы</a></li>
+
+                <li><a href="info.html">Анықтамалар</a></li>
+
+                <li><a href="documents.html" class="active">Құжаттар</a></li>
+
+                <li><a href="contact.html">Байланыс</a></li>
+
+            </ul>
+
+        </nav>
+
+    </header>
+
+    <main class="container">
+
+        <h1>Ресми құжаттар</h1>
+
+        <p class="warning">Құжаттарды жүктеп алу шектелген. Тек қарауға рұқсат етілген.</p>
+
+        
+
+        <div id="document-list" class="doc-grid">
+
+            <!-- Dynamic Document Cards -->
+
+        </div>
+
+        <div id="doc-viewer-overlay" class="overlay" style="display:none;">
+
+            <div class="viewer-content">
+
+                <span class="close-btn" onclick="closeViewer()">&times;</span>
+
+                <iframe id="pdf-frame" src="" frameborder="0"></iframe>
+
+                <div class="watermark">Tastandiev School - Internal Use Only</div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
