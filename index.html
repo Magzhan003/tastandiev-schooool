@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+
+<html lang="kk">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Тастандиев мектебі - Басты бет</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+
+</head>
+
+<body>
+
+    <header>
+
+        <nav class="navbar">
+
+            <div class="logo">Tastandiev School</div>
+
+            <ul class="nav-links">
+
+                <li><a href="index.html" class="active">Басты бет</a></li>
+
+                <li><a href="about.html">Мектеп туралы</a></li>
+
+                <li><a href="info.html">Анықтамалар</a></li>
+
+                <li><a href="documents.html">Құжаттар</a></li>
+
+                <li><a href="contact.html">Байланыс</a></li>
+
+            </ul>
+
+        </nav>
+
+    </header>
+
+    <main>
+
+        <section class="hero">
+
+            <div class="hero-content">
+
+                <h1>Болашаққа жол осы жерден басталады</h1>
+
+                <p>Тастандиев атындағы заманауи білім ордасы</p>
+
+                <div class="hero-buttons">
+
+                    <a href="about.html" class="btn primary">Толығырақ</a>
+
+                    <a href="contact.html" class="btn secondary">Тіркелу</a>
+
+                </div>
+
+            </div>
+
+            <div class="model-container">
+
+                <model-viewer src="school_model.glb" 
+
+                              alt="Мектептің 3D моделі" 
+
+                              auto-rotate camera-controls 
+
+                              shadow-intensity="1" 
+
+                              style="width: 100%; height: 400px;">
+
+                </model-viewer>
+
+            </div>
+
+        </section>
+
+        <section class="news-section">
+
+            <h2>Соңғы жаңалықтар</h2>
+
+            <div id="news-grid" class="news-grid">
+
+                <!-- Dynamic Content -->
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+
+        <p>&copy; 2024 Тастандиев мектебі. Барлық құқықтар қорғалған.</p>
+
+    </footer>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
