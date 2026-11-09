@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="kk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>body{margin:0}</style>
+</head>
+<body>
+<title>Фишингті тани аласың ба?</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Nunito:wght@500;600;700;800&display=swap">
+<style>
+/* Layout: one narrow phone-first column; each question is an incoming SMS followed by answer buttons */
+:root{
+  --bg:#F5F2EA; --surface:#FFFFFF; --ink:#141A33; --muted:#4A5070;
+  --accent:#D62F3A; --accent-ink:#FFFFFF; --signal:#FFC531; --signal-ink:#141A33;
+  --good:#177A4F; --good-bg:#DDF1E6; --bad:#C42532; --bad-bg:#FBE3E4;
+  --bubble:#E9ECF2; --line:#D9D3C4;
+  --display:"Montserrat",system-ui,sans-serif; --body:"Nunito",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0F1326; --surface:#1A2040; --ink:#F2F0EA; --muted:#B7BCD3;
+  --accent:#FF5A63; --accent-ink:#1A0508; --signal:#FFC531; --signal-ink:#141A33;
+  --good:#6FD8A0; --good-bg:#16352A; --bad:#FF7A82; --bad-bg:#3A1A22;
+  --bubble:#252C52; --line:#2E365A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1326; --surface:#1A2040; --ink:#F2F0EA; --muted:#B7BCD3;
+  --accent:#FF5A63; --accent-ink:#1A0508; --signal:#FFC531; --signal-ink:#141A33;
+  --good:#6FD8A0; --good-bg:#16352A; --bad:#FF7A82; --bad-bg:#3A1A22;
+  --bubble:#252C52; --line:#2E365A; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.5}
+.wrap{max-width:560px;margin:0 auto;padding-block:24px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:18px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.tag{font-family:var(--display);font-weight:800;font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.count{font-family:var(--display);font-weight:800;font-size:14px;background:var(--ink);color:var(--bg);padding:6px 12px;border-radius:999px;font-variant-numeric:tabular-nums}
+.progress{height:8px;background:var(--line);border-radius:4px;overflow:hidden}
+.progress span{display:block;height:100%;background:var(--accent);transition:width .3s}
+h1{font-family:var(--display);font-weight:900;font-size:clamp(30px,8vw,42px);line-height:1.05;margin:0;text-wrap:balance}
+h1 em{font-style:normal;color:var(--accent)}
+.lead{margin:0;color:var(--muted)}
+.phone{background:var(--surface);border-radius:24px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.sender{display:flex;align-items:center;gap:10px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.ava{width:36px;height:36px;border-radius:50%;background:var(--muted);color:var(--surface);display:flex;align-items:center;justify-content:center;font-weight:800}
+.sender b{display:block;font-size:15px}
+.sender small{font-size:12px;color:var(--muted)}
+.bubble{background:var(--bubble);border-radius:18px 18px 18px 6px;padding:12px 14px;font-size:16px;overflow-wrap:anywhere}
+.bubble .link{color:#3B6FE0;text-decoration:underline}
+:root[data-theme="dark"] .bubble .link{color:#8FB0FF}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .bubble .link{color:#8FB0FF}}
+.q{font-family:var(--display);font-weight:800;font-size:21px;line-height:1.25;margin:0;text-wrap:balance}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{font:inherit;font-weight:700;text-align:left;width:100%;min-height:52px;padding:14px 16px;border-radius:16px;border:2px solid var(--ink);background:var(--surface);color:var(--ink);cursor:pointer;display:flex;gap:12px;align-items:flex-start}
+.opt:hover:not(:disabled){background:var(--bubble)}
+.opt:focus-visible,.btn:focus-visible{outline:3px solid var(--signal);outline-offset:2px}
+.opt .key{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--ink);color:var(--bg);display:flex;align-items:center;justify-content:center;font-size:14px;font-family:var(--display)}
+.opt:disabled{cursor:default}
+.opt.right{border-color:var(--good);background:var(--good-bg)}
+.opt.right .key{background:var(--good);color:var(--surface)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.opt.wrong .key{background:var(--bad);color:var(--surface)}
+.opt.dim{opacity:.55}
+.explain{border-radius:16px;padding:14px 16px;background:var(--surface);border:2px solid var(--line)}
+.explain b{font-family:var(--display);display:block;margin-bottom:4px}
+.explain.ok b{color:var(--good)} .explain.no b{color:var(--bad)}
+.btn{font-family:var(--display);font-weight:800;font-size:17px;min-height:52px;padding:14px 20px;border-radius:16px;border:0;background:var(--accent);color:var(--accent-ink);cursor:pointer;width:100%}
+.btn.alt{background:var(--ink);color:var(--bg)}
+.score{font-family:var(--display);font-weight:900;font-size:88px;line-height:1;color:var(--accent);font-variant-numeric:tabular-nums}
+.score small{font-size:36px;color:var(--muted)}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.step{border-radius:14px;padding:12px 10px;font-family:var(--display);font-weight:900;font-size:15px;text-align:center}
+.s1{background:var(--accent);color:var(--accent-ink)} .s2{background:var(--signal);color:var(--signal-ink)} .s3{background:var(--ink);color:var(--bg)}
+.foot{font-size:13px;color:var(--muted);text-align:center}
+@media (prefers-reduced-motion:reduce){.progress span{transition:none}}
+</style>
+
+<main class="wrap" id="app" aria-live="polite"></main>
+
+<script>
+const Q = [
+  {from:"BONUS-KZ", sub:"SMS", msg:'Құттықтаймыз! Сіз 500 000 ₸ ұтып алдыңыз! Жүлдені 10 минут ішінде алыңыз: <span class="link">bonus-kz.sylyq-top.ru</span>',
+   q:"Сен ешқандай ұтысқа қатыспағансың. Не істейсің?",
+   o:["Сілтемеге өтіп, жүлдені аламын","Хабарламаны жойып, нөмірді бұғаттаймын","Досыма жіберіп, ол да ұтып алсын деймін"], a:1,
+   e:"Қатыспаған ұтыста жеңу мүмкін емес. «10 минут» деп асықтыру мен бөтен сілтеме — фишингтің айқын белгілері."},
+  {from:"eGov", sub:"SMS", msg:'Құрметті азамат! Сіздің жеке шотыңыз бұғатталды. Растау үшін өтіңіз: <span class="link">egov-kz-portal.online</span>',
+   q:"Бұл сілтеменің несі күдікті?",
+   o:["Ештеңесі, мемлекеттік сайт қой","Ресми сайт — egov.kz, ал мұнда мекенжай бұрмаланған","Тек ағылшынша жазылғаны"], a:1,
+   e:"Алаяқтар ресми атауға сызықша, артық сөз немесе басқа домен (.online, .top) қосады. Ресми сайтты сілтеме арқылы емес, өзің тауып аш."},
+  {from:"+7 7XX XXX XX XX", sub:"Қоңырау", msg:"Сәлеметсіз бе, мен банктің қауіпсіздік қызметіненмін. Картаңыздан біреу ақша алғысы келеді. Қазір SMS-код келеді, соны айтыңыз.",
+   q:"Ең дұрыс әрекет қайсы?",
+   o:["Кодты айтамын, банк қызметкері ғой","Ешнәрсе айтпай, телефонды қоямын да, ата-анама айтамын","Тек кодтың жартысын айтамын"], a:1,
+   e:"Банк ешқашан SMS-кодты сұрамайды. Код — ақшаңның кілті. Күмәнің болса, банктің ресми нөміріне өзің хабарлас."},
+  {from:"Әли (досың)", sub:"Мессенджер", msg:"Сәлем! Маған шұғыл 5 000 ₸ керек, кешке қайтарамын. Мына картаға аударшы, тек ешкімге айтпа!",
+   q:"Досыңның аккаунтынан осындай хабарлама келді. Не істейсің?",
+   o:["Бірден аударамын, дос қой","Досыма басқа жолмен қоңырау шалып, тексеремін","Картаның нөмірін басқа достарыма таратамын"], a:1,
+   e:"Аккаунт бұзылған болуы мүмкін. «Ешкімге айтпа» және «шұғыл» деген сөздер — қауіп белгісі. Досыңа тікелей қоңырау шал."},
+  {from:"Game Rewards", sub:"Жарнама", msg:'Тегін 10 000 алмаз! Тек ойындағы логин мен құпия сөзіңді енгіз: <span class="link">free-almaz-gift.top</span>',
+   q:"Бұл ұсыныс туралы не айтасың?",
+   o:["Бұл фишинг: аккаунтымды ұрлау үшін құпия сөзді сұрап тұр","Нағыз акция, тез енгізу керек","Құпия сөзді емес, тек логинді енгізсем болады"], a:0,
+   e:"Ешбір ойын сыйлық үшін құпия сөзді бөгде сайтқа енгізуді сұрамайды. Тегін сыйлық — ең жиі кездесетін тұзақ."},
+  {from:"Сен", sub:"Жағдай", msg:"Абайсызда күмәнді сілтемені ашып, сол сайтқа әлеуметтік желідегі құпия сөзімді енгізіп қойдым…",
+   q:"Енді не істеу керек?",
+   o:["Ештеңе, бәлкім, бәрі жақсы болады","Ұялғаннан ешкімге айтпаймын","Құпия сөзді дереу ауыстырып, 2FA қосып, ересектерге айтамын"], a:2,
+   e:"Қателік болды — бұл қалыпты жағдай. Ең бастысы — тез әрекет ету: құпия сөзді ауыстыр, 2FA қос, ата-анаңа не мұғаліміңе айт."}
+];
+const app = document.getElementById('app');
+let i = 0, score = 0, picked = null;
+const esc = s => s;
+function header(){
+  return `<div class="top"><span class="tag">КИБЕРҚАУІПСІЗДІК — МЕНІҢ ТАҢДАУЫМ</span>${i<Q.length?`<span class="count">${i+1} / ${Q.length}</span>`:''}</div>
+  <div class="progress" aria-hidden="true"><span style="width:${(Math.min(i+(picked!==null?1:0),Q.length)/Q.length)*100}%"></span></div>`;
+}
+function start(){
+  app.innerHTML = `${header()}
+  <h1>Фишингті тани <em>аласың ба?</em></h1>
+  <p class="lead">6 жағдай — 6 шешім. Әр хабарламаны оқып, ең дұрыс әрекетті таңда. Тест 2 минут алады.</p>
+  <div class="steps"><div class="step s1">ТОҚТА</div><div class="step s2">ТЕКСЕР</div><div class="step s3">ХАБАРЛА</div></div>
+  <button class="btn" id="go">Тестті бастау</button>
+  <p class="foot">«Киберқауіпсіздік — менің таңдауым» байқауы, 2026</p>`;
+  document.getElementById('go').onclick = () => { i=0; score=0; picked=null; render(); };
+}
+function render(){
+  if(i>=Q.length) return result();
+  const it = Q[i];
+  app.innerHTML = `${header()}
+  <div class="phone">
+    <div class="sender"><span class="ava" aria-hidden="true">${it.from[0]}</span><div><b>${it.from}</b><small>${it.sub}</small></div></div>
+    <div class="bubble">${it.msg}</div>
+  </div>
+  <p class="q">${it.q}</p>
+  <div class="opts">${it.o.map((t,k)=>{
+    let cls='opt';
+    if(picked!==null){ if(k===it.a) cls+=' right'; else if(k===picked) cls+=' wrong'; else cls+=' dim'; }
+    return `<button class="${cls}" id="opt-${k}" data-k="${k}" ${picked!==null?'disabled':''}><span class="key">${'АБВ'[k]}</span><span>${t}</span></button>`;
+  }).join('')}</div>
+  ${picked!==null?`<div class="explain ${picked===it.a?'ok':'no'}"><b>${picked===it.a?'Дұрыс!':'Қате.'}</b>${it.e}</div>
+  <button class="btn ${i===Q.length-1?'':'alt'}" id="next">${i===Q.length-1?'Нәтижені көру':'Келесі сұрақ'}</button>`:''}`;
+  app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{ picked=+b.dataset.k; if(picked===Q[i].a) score++; render(); const n=document.getElementById('next'); if(n) n.focus(); });
+  const n=document.getElementById('next'); if(n) n.onclick=()=>{ i++; picked=null; render(); window.scrollTo(0,0); };
+}
+function result(){
+  const msg = score===6 ? 'Керемет! Сен — нағыз киберқорғаушысың. Алаяқтар сені алдай алмайды.'
+    : score>=4 ? 'Жақсы нәтиже! Бірақ кейбір тұзақтар әлі де қауіпті. Қате жауаптардың түсіндірмесін есіңе сақта.'
+    : 'Абай бол! Алаяқтар сенің аңғалдығыңды пайдалануы мүмкін. Тестті қайта тапсырып, белгілерді жатта.';
+  app.innerHTML = `${header()}
+  <h1>Сенің <em>нәтижең</em></h1>
+  <div class="score">${score}<small> / ${Q.length}</small></div>
+  <p class="lead">${msg}</p>
+  <div class="explain"><b>Есіңде сақта</b>Күмәнді хабарлама келсе — тоқта, сілтемені ашпа. Жіберушіні ресми дереккөзден тексер. Ата-анаңа немесе мұғаліміңе хабарла. SMS-кодты, құпия сөзді, карта деректерін ешкімге айтпа!</div>
+  <div class="steps"><div class="step s1">ТОҚТА</div><div class="step s2">ТЕКСЕР</div><div class="step s3">ХАБАРЛА</div></div>
+  <button class="btn" id="again">Қайта тапсыру</button>`;
+  document.getElementById('again').onclick=()=>{ i=0; score=0; picked=null; render(); window.scrollTo(0,0); };
+}
+start();
+</script>
+
+</body>
+</html>
